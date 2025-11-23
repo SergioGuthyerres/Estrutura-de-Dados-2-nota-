@@ -1,0 +1,20 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": "eslint:recommended",
+  "rules": {
+    // Força PascalCase para classes
+    "new-cap": ["error", { "newIsCap": true }],
+
+    // Força camelCase para variáveis e parâmetros
+    "camelcase": ["error", { "properties": "always" }],
+
+    // Opcional: define espaçamento
+    "indent": ["error", 4],
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"]
+  }
+}
