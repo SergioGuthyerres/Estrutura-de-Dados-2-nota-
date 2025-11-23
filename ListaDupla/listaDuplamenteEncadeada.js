@@ -29,6 +29,7 @@ module.exports = class ListaDuplaLinkada {
       this.tail = newNode;
     }
     this.len++;
+    return item;
   }
   prepend(item) {
     // add no inicio
@@ -42,8 +43,9 @@ module.exports = class ListaDuplaLinkada {
       this.head = newNode;
     }
     this.len++;
+    return item;
   }
-  AddIn(item, index) {
+  insertAt(item, index) {
     if (index < 0 || index > this.len) {
       return null;
     }
@@ -59,14 +61,15 @@ module.exports = class ListaDuplaLinkada {
     }
 
     const newNode = new Node(item);
-    newNode.prev = atual.prev; // 1. Novo nó aponta para o anterior
-    newNode.next = atual; // 2. Novo nó aponta para o atual
-    atual.prev.next = newNode; // 3. Nó anterior aponta para o novo nó
-    atual.prev = newNode; // 4. Nó atual aponta para o novo nó
+    newNode.prev = atual.prev; // 1. Novo nó prev aponta para o anterior
+    newNode.next = atual; // 2. Novo nó next aponta para o atual
+    atual.prev.next = newNode; // 3. Nó anterior next aponta para o novo nó
+    atual.prev = newNode; // 4. Nó atual prev aponta para o novo nó
 
     this.len++;
+    return item;
   }
-  RemoveEnd() {
+  removeEnd() {
     if (this.len === 0) {
       return null;
     }
@@ -106,7 +109,7 @@ module.exports = class ListaDuplaLinkada {
     let indice = 0;
 
     if (index === 0) return this.removeFront();
-    if (index === this.len - 1) return this.RemoveEnd();
+    if (index === this.len - 1) return this.removeEnd();
     while (index !== indice) {
       atual = atual.next;
       indice++;
@@ -114,7 +117,7 @@ module.exports = class ListaDuplaLinkada {
 
     atual.prev.next = atual.next;
     atual.next.prev = atual.prev;
-    let removido = atual.item;
+    const removido = atual.item;
     atual.next = null;
     atual.prev = null;
     this.len--;
@@ -123,13 +126,11 @@ module.exports = class ListaDuplaLinkada {
 
   find(item) {
     let atual = this.head;
-    let indice = 0;
     while (atual !== null) {
       if (atual.item === item) {
         return atual;
       }
       atual = atual.next;
-      indice += 1;
     }
     return null;
   }
@@ -145,5 +146,13 @@ module.exports = class ListaDuplaLinkada {
       indice += 1;
     }
     return -1;
+  }
+  clear() {
+    this.head = null;
+    this.tail = null;
+    this.tail = null;
+  }
+  size() {
+    return this.len;
   }
 };
