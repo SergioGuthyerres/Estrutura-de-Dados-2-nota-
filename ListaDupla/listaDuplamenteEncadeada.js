@@ -181,6 +181,26 @@ module.exports = class ListaDuplaLinkada {
     }
     return -1;
   }
+  getElement(index) {
+    if (index < 0 || index >= this.len) {
+      return null;
+    }
+    let atual;
+
+    if (index <= this.len / 2) {
+      atual = this.head;
+      for (let i = 0; i < index; i++) {
+        atual = atual.next;
+      }
+    } else {
+      atual = this.tail;
+      for (let i = this.len - 1; i > index; i--) {
+        atual = atual.previous;
+      }
+    }
+
+    return atual;
+  }
   clear() {
     this.head = null;
     this.tail = null;
