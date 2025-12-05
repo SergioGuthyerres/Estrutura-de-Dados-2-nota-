@@ -1,35 +1,37 @@
 const ListaDuplaLinkada = require("./listaDuplamenteEncadeada");
 
-// --- ÁREA DE TESTES ---
+//--------------UNDO/REDO-----------------//
+class Historico {
+    constructor() {
+        this.undoStack = new ListaDuplaLinkada();
+        this.redoStack = new ListaDuplaLinkada();
+    }
 
-const lista = new ListaDuplaLinkada();
+    registrar(acao) {
+        this.undoStack.insert(acao);
+        this.redoStack.clear();
 
-console.log("1. Inserindo A, B, C, D, E");
-lista.insert("A");
-lista.insert("B");
-lista.insert("C");
-lista.insert("D");
-lista.insert("E");
-
-lista.print();
-// Esperado: null <-> A <-> B <-> C <-> D <-> E <-> null
-lista.printReverse();
-// Esperado: null <-> E <-> D <-> C <-> B <-> A <-> null
-
-console.log("\n2. Testando removeFrom(2) - Cortar a partir do índice 2 (C)");
-// Lembrando: Índices são 0(A), 1(B), 2(C), 3(D), 4(E).
-// Se remover do 2 em diante, devem sobrar A e B.
-
-// Certifique-se de ter atualizado o método removeFrom com a correção que passei antes!
-lista.removeFrom(2);
-
-lista.print();
-// Esperado: null <-> A <-> B <-> null
-
-lista.printReverse();
-// Esperado: null <-> B <-> A <-> null
-
-console.log("\n3. Verificando integridade");
-console.log("Tamanho (len):", lista.size()); // Esperado: 2
-console.log("Tail atual:", lista.tail.item); // Esperado: B
-console.log("Head atual:", lista.head.item); // Esperado: A
+    }
+    undo() {
+        if(this.undoStack.isEmpty()) {
+            console.log("Nada para desfazer")
+            return null;
+        }
+        const acao = this.undoStack.removeEnd();
+        this.redoStack.insert(acao);
+        return acao;
+    }
+    redo() {
+        if(this.redoStack.isEmpty()) {
+            console.log("Nada pra refazer");
+            return null;
+        }
+        const acao = this.redoStack.removeEnd();
+        this.undoStack.insert(acao);
+        return acao;
+    }
+    acaoAtual() {
+        if(this.undoStack.tail) return this.undoStack.tail.item;
+        return null;
+    }
+}
