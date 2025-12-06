@@ -1,37 +1,37 @@
-const ListaDuplaLinkada = require("./listaDuplamenteEncadeada");
+const ShoppingCartHistory = require("./solucaoListaDupla")
 
-//--------------UNDO/REDO-----------------//
-class Historico {
-    constructor() {
-        this.undoStack = new ListaDuplaLinkada();
-        this.redoStack = new ListaDuplaLinkada();
-    }
+const histo = new ShoppingCartHistory();
 
-    registrar(acao) {
-        this.undoStack.insert(acao);
-        this.redoStack.clear();
+console.log("Testando o carrinho com UNDO e REDO")
 
-    }
-    undo() {
-        if(this.undoStack.isEmpty()) {
-            console.log("Nada para desfazer")
-            return null;
-        }
-        const acao = this.undoStack.removeEnd();
-        this.redoStack.insert(acao);
-        return acao;
-    }
-    redo() {
-        if(this.redoStack.isEmpty()) {
-            console.log("Nada pra refazer");
-            return null;
-        }
-        const acao = this.redoStack.removeEnd();
-        this.undoStack.insert(acao);
-        return acao;
-    }
-    acaoAtual() {
-        if(this.undoStack.tail) return this.undoStack.tail.item;
-        return null;
-    }
-}
+//------Registrar operações------//
+
+console.log("Teste 1")
+histo.addItem("Arroz")
+histo.addItem("Feijão")
+histo.removeItem("Suco")
+
+console.log("Tamanho:", histo.historico.len)
+console.log("Posição Atual:", histo.position());
+console.log("Ação atual:", histo.getCurrentAction().item);
+
+//---------------Desfazer ações------------//
+
+console.log("Teste 2")
+histo.undo();
+console.log("-Undo 1-")
+console.log("Tamanho:", histo.historico.len)
+console.log("Posição Atual:", histo.position());
+console.log("Ação atual:", histo.getCurrentAction().item);
+
+histo.undo();
+console.log("-Undo 2-")
+console.log("Tamanho:", histo.historico.len)
+console.log("Posição Atual:", histo.position());
+console.log("Ação atual:", histo.getCurrentAction().item);
+
+histo.undo();
+console.log("-Undo 3-")
+console.log("Tamanho:", histo.historico.len)
+console.log("Posição Atual:", histo.position());
+console.log("Ação atual:", histo.getCurrentAction().item);
